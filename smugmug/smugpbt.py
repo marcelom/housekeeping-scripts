@@ -16,12 +16,9 @@ cj           = cookielib.CookieJar()
 urlopener    = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
 
 def smugopen(params={}):
-	data = urllib.urlencode(params)
-	data = data.encode('utf-8')
+	data = urllib.urlencode(params).encode('utf-8')
 	req = urllib2.Request(API_ENDPOINT, data, HEADERS)
-	response = urlopener.open(req)
-	the_page = response.read()
-	return the_page
+	return urlopener.open(req).read()
 
 #email = raw_input("Enter your email: ")
 password = getpass.getpass("Enter your password:")
