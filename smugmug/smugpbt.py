@@ -35,13 +35,13 @@ the_page = response.read()
 print the_page
 print cj
 
-sessionid = json.loads(the_page)['Login']['Session']['id']
+#sessionid = json.loads(the_page)['Login']['Session']['id']
 
-print 'login successful: %s' % sessionid
+#print 'login successful: %s' % sessionid
 
-params = {'method' : 'smugmug.albums.get',
+params = {'method' : 'smugmug.albums.get' }
           #'APIKey' : API_KEY,
-          'SessionID' : sessionid }
+          #'SessionID' : sessionid }
 
 data = urllib.urlencode(params)
 data = data.encode('utf-8')
