@@ -7,47 +7,36 @@ import json
 import cookielib
 import getpass
 
-#API_KEY='E3VwzE0hgcpRMaUWG4taQanT8I9qPlpr'
-API_KEY='VQbsN2RNqtvowK7wxtmqbJIMQEvhQmq9'
-USER_AGENT='PersonalBackupTool/1.0'
+API_KEY      = 'VQbsN2RNqtvowK7wxtmqbJIMQEvhQmq9'
+USER_AGENT   = 'PersonalBackupTool/1.0'
+API_ENDPOINT = 'https://api.smugmug.com/services/api/json/1.2.2/'
+HEADERS      = { 'User-Agent' : USER_AGENT }
+
+cj           = cookielib.CookieJar()
+urlopener    = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
+
+def smugopen(params={}):
+	data = urllib.urlencode(params)
+	data = data.encode('utf-8')
+	req = urllib2.Request(API_ENDPOINT, data, HEADERS)
+	response = urlopener.open(req)
+	the_page = response.read()
+	return the_page
 
 #email = raw_input("Enter your email: ")
 password = getpass.getpass("Enter your password:")
 
-url = 'https://api.smugmug.com/services/api/json/1.2.2/'
 params = {'APIKey' : API_KEY,
           'EmailAddress' : 'marcelosm@gmail.com',
           'Password' : password,
           'method' : 'smugmug.login.withPassword' }
-headers = { 'User-Agent' : USER_AGENT }
-
-# Setup a few important helpers...
-# cj is our cookie jar, urlopener is our cookie enabled urllib2 opener.
-cj = cookielib.CookieJar()
-urlopener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
-
-data = urllib.urlencode(params)
-data = data.encode('utf-8')
-req = urllib2.Request(url, data, headers)
-response = urlopener.open(req)
-the_page = response.read()
-
+the_page = smugopen(params)
 print the_page
-print cj
-
-#sessionid = json.loads(the_page)['Login']['Session']['id']
-
-#print 'login successful: %s' % sessionid
 
 params = {'method' : 'smugmug.albums.get' }
-          #'APIKey' : API_KEY,
-          #'SessionID' : sessionid }
+the_page = smugopen(params)
+print the_page
 
-data = urllib.urlencode(params)
-data = data.encode('utf-8')
-print data
-req = urllib2.Request(url, data, headers)
-response = urlopener.open(req)
-the_page = response.read()
-
+params = {'method' : 'smugmug.logout' }
+the_page = smugopen(params)
 print the_page
