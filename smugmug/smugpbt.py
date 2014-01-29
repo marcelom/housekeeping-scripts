@@ -10,30 +10,28 @@ import getpass
 API_KEY      = 'VQbsN2RNqtvowK7wxtmqbJIMQEvhQmq9'
 USER_AGENT   = 'PersonalBackupTool/1.0'
 API_ENDPOINT = 'https://api.smugmug.com/services/api/json/1.2.2/'
-HEADERS      = { 'User-Agent' : USER_AGENT }
+HEADERS      = dict(User-Agent=USER_AGENT)
 
 cj           = cookielib.CookieJar()
 urlopener    = urllib2.build_opener(urllib2.HTTPCookieProcessor(cj))
 
 def smugopen(params={}):
-	data = urllib.urlencode(params).encode('utf-8')
-	req = urllib2.Request(API_ENDPOINT, data, HEADERS)
-	return urlopener.open(req).read()
+    data = urllib.urlencode(params).encode('utf-8')
+    req = urllib2.Request(API_ENDPOINT, data, HEADERS)
+    return urlopener.open(req).read()
 
 #email = raw_input("Enter your email: ")
 password = getpass.getpass("Enter your password:")
 
-params = {'APIKey' : API_KEY,
-          'EmailAddress' : 'marcelosm@gmail.com',
-          'Password' : password,
-          'method' : 'smugmug.login.withPassword' }
+params = dict(APIKey=API_KEY, EmailAddress='marcelosm@gmail.com', Password=password,
+              method='smugmug.login.withPassword')
 the_page = smugopen(params)
 print the_page
 
-params = {'method' : 'smugmug.albums.get' }
+params = dict(method='smugmug.albums.get')
 the_page = smugopen(params)
 print the_page
 
-params = {'method' : 'smugmug.logout' }
+params = dict(method='smugmug.logout')
 the_page = smugopen(params)
 print the_page
