@@ -43,14 +43,14 @@ def downloader():
                 q.task_done()
                 continue
         f = open(fname, "wb")
-        req = urllib2.Request(item[1]['OriginalURL'], "", HEADERS)
+        req = urllib2.Request(item[1]['OriginalURL'].encode('utf-8'), "", HEADERS)
         f.write(urlopener.open(req).read())
         f.close()
         print "Found file '%s': Downloaded OK." % fname
         q.task_done()
 
-email = raw_input("Enter your email: ")
-#email = 'marcelosm@gmail.com'
+#email = raw_input("Enter your email: ")
+email = 'smugmug@nacional.edu.br'
 password = getpass.getpass("Enter your password:")
 
 params = dict(APIKey=API_KEY, EmailAddress=email, Password=password, method='smugmug.login.withPassword')
@@ -70,9 +70,10 @@ if albums['stat']=='ok':
 else:
     error(albums)
 
-t = threading.Thread(target=downloader)
-t.daemon = True
-t.start()
+for i in range(4):
+    t = threading.Thread(target=downloader)
+    t.daemon = True
+    t.start()
 
 for a in albums['Albums']:
     id = a['id']
